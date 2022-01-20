@@ -8,7 +8,9 @@
 
 ## Install
 
-### Auto installer
+- Rename the env.dist file to .env
+
+- ### Auto installer
 
 - You can install with one of the install script file located at the base project directory.
 
