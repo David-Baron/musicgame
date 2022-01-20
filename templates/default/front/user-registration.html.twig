@@ -1,0 +1,32 @@
+{% extends 'default/front/layout.html.twig' %}
+{% block title %}{% endblock %}
+{% block body %}
+    <h1>Create account</h1>
+    <div class="col-6">
+        {{ form_start(form) }}
+            <div class="mb-3">
+                <label for="registration_username" class="form-label">Username</label>
+                {{ form_widget(form.username, {'attr': {'class': 'form-control'}}) }}
+            </div>
+            <div class="mb-3">
+                <label for="registration_email" class="form-label">Email</label>
+                {{ form_widget(form.email, {'attr': {'class': 'form-control'}}) }}
+            </div>
+            <div class="mb-3">
+                <label for="registration_password_first" class="form-label">Password</label>
+                {{ form_widget(form.password.first, {'attr': {'class': 'form-control'}}) }}
+            </div>
+            <div class="mb-3">
+                <label for="registration_password_second" class="form-label">Repeat password</label>
+                {{ form_widget(form.password.second, {'attr': {'class': 'form-control'}}) }}
+            </div>
+            <div class="mb-3">
+                {{ form_widget(form.termsAccepted, {'attr': {'class': 'form-check-input'}}) }}
+                <label for="registration_termsAccepted" class="form-check-label">Accept the terms</label>
+            </div>
+            <div class="mb-3">
+                <button type="submit" class="btn btn-sm btn-secondary">Register me!</button>
+            </div>
+        {{ form_end(form) }}
+    </div>
+{% endblock %}

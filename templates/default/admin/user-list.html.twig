@@ -1,0 +1,88 @@
+{% extends "default/admin/layout.html.twig" %}
+{% block stylesheets %}
+    <link href="https://unpkg.com/tabulator-tables@4.9.3/dist/css/tabulator.min.css" rel="stylesheet">
+{% endblock %}
+{% block body %}
+    <h1>Liste des utilisateurs</h1>
+    {% if users %}
+        <div class="col-10 mb-3">
+            <table id="users_table">
+                <thead>
+                    <tr><th></th><th>Username</th><th>Role</th><th>Email</th></tr>
+                </thead>
+                <tbody>
+                    {% for user in users %}
+                        {% if user.roles[0] != 'ROLE_ADMIN' %}
+                            <tr>
+                                <td>{{ user.id }}</td>
+                                <td>{{ user.username }}</td>
+                                <td>
+                                    {% if user.roles[0] == "ROLE_ADMIN" %}
+                                            Administrateur
+                                    {% elseif user.roles[0] == "ROLE_MODO" %}
+                                            Modérateur
+                                    {% elseif user.roles[0] == "ROLE_USER" %}
+                                            Utilisateur
+                                    {% else %}
+                                            Utilisateur
+                                    {% endif %}
+                                </td>
+                                <td>{{ user.email }}</td>
+                            </tr>
+                        {% endif %}
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% endif %}
+    <div class="col-10 mb-3">
+        <a href="{{ path ('admin_user_create') }}" class="btn btn-secondary">Ajouter un utilisateur</a>
+    </div>
+{% endblock %}
+{% block javascripts %}
+    <script type="text/javascript" src="https://unpkg.com/tabulator-tables@4.9.3/dist/js/tabulator.min.js"></script>
+    <script>
+        var table = new Tabulator("#users_table", {
+            autoResize:true,
+            pagination:"local",
+            paginationSize:25,
+            paginationSizeSelector:[25, 50, 100],
+            movableColumns:false,
+            layout:"fitColumns",
+            columns:[
+                {title:"", field:"id", visible:false},
+                {title:"Username", field:"username"},
+                {title:"Role", field:"roles", editor:"select", 
+                    editorParams:{
+                        values:{
+                            "Administrateur":"Administrateur",
+                            "Moderateur":"Moderateur",
+                            "Utilisateur":"Utilisateur",
+                        }
+                    },
+                    cellEdited:function(cell){
+                        let data = cell.getRow().getData();
+                        console.log(data);
+                        appUpdateData(data);
+                    }
+                },
+                {title:"Email", field:"email"},
+            ]
+        });
+
+        function appUpdateData(data)
+        {
+            var dataToSave = JSON.stringify({id:data.id, role:data.roles});
+            console.log(dataToSave);
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                    console.log(this.responseText);
+                }
+            };
+            xhttp.open("POST", "/admin/users/user/ajax-update", true);
+            xhttp.setRequestHeader("Content-type", 'application/x-www-form-urlencoded; charset=utf-8');
+            xhttp.send(dataToSave);
+        }
+    </script>
+{% endblock %}

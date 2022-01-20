@@ -1,0 +1,7 @@
+# Let this route allways at the end!!! Will be always here not in annotation!!!!
+front_musicgame_game_tracks:
+    path: /{slug}/tracks
+    controller:  App\Controller\FrontController::viewTrackList
+front_musicgame_playlist_tracks:
+    path: /{slug}/playlist-{playlistId}/tracks
+    controller:  App\Controller\FrontController::viewPlaylistTable

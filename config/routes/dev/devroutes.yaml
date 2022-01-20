@@ -1,0 +1,4 @@
+devtool:
+    path: /devtool
+    controller: App\Controller\DevToolController::index
+    methods: GET

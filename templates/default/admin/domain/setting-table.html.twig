@@ -1,0 +1,64 @@
+{% extends "default/admin/layout.html.twig" %}
+{% block stylesheets %}
+    <link href="https://unpkg.com/tabulator-tables@4.9.3/dist/css/tabulator.min.css" rel="stylesheet">
+{% endblock %}
+{% block body %}
+    <h1>Settings</h1>
+    <div class="col-10">
+        {% if settings %}
+            <table id="settings-table" class="table table-sm">
+                <thead>
+                    <tr><th></th><th>Name</th><th>Value</th><th>Description</th><th></th></tr>
+                </thead>
+                <tbody>
+                    {% for setting in settings %}
+                        <tr>
+                            <td>{{ setting.id }}</td>
+                            <td>{{ setting.name }}</td>
+                            <td>{{ setting.value }}</td>
+                            <td>{{ setting.description }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% endif %}
+    </div>
+{% endblock %}
+{% block javascripts %}
+    <script type="text/javascript" src="https://unpkg.com/tabulator-tables@4.9.3/dist/js/tabulator.min.js"></script>
+    <script>
+        var table = new Tabulator("#settings-table", {
+            autoResize:true,
+            pagination:"local",
+            paginationSize:25,
+            paginationSizeSelector:[25, 50, 100],
+            movableColumns:false,
+            layout:"fitColumns",
+            columns:[
+                {title:"", field:"id", width:20},
+                {title:"Name", field:"name"},
+                {title:"Value", field:"value", editor:"input", 
+                    cellEdited:function(cell){
+                        let data = cell.getRow().getData();
+                        appUpdateData(data);
+                    }
+                },
+                {title:"Description", field:"description"}
+            ]
+        });
+        function appUpdateData(data)
+        {
+            var dataToSave = JSON.stringify({id:data.id, value:data.value});
+            console.log(dataToSave);
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                    console.log(this.responseText);
+                }
+            };
+            xhttp.open("POST", "/admin/settings/setting", true);
+            xhttp.setRequestHeader("Content-type", 'application/x-www-form-urlencoded; charset=utf-8');
+            xhttp.send(dataToSave);
+        }
+    </script>
+{% endblock %}

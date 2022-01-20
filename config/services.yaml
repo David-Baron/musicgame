@@ -1,0 +1,31 @@
+parameters:
+    upload_directory: '../__storage/'
+    'app.owner': 'David-Baron'
+    'app.name': 'Musicgame'
+    'app.version': '1.0.0'
+services:
+    _defaults:
+        autowire: true      
+        autoconfigure: true 
+    
+    App\:
+        resource: '../src/'
+        exclude:
+            - '../src/DependencyInjection/'
+            - '../src/Entity/'
+            - '../src/Kernel.php'
+            - '../src/Tests/'
+
+    App\Controller\:
+        resource: '../src/Controller/'
+        tags: ['controller.service_arguments']
+
+    App\Service\GithubService:
+        arguments:
+            $owner: 'David-Baron'
+            $repos: 'Musicgame'
+            $compressor: 'zip'
+
+    App\Service\CsvFileUploader:
+        arguments:
+            $targetDirectory: '%upload_directory%'

@@ -1,0 +1,32 @@
+{% extends "default/admin/layout.html.twig" %}
+{% block title %} | Nouvel utilisateur{% endblock %}
+{% block body %}
+<h1>Nouvel utilisateur</h1>
+<div class="col-6">
+    <div class="alert alert-info" role="alert">
+    <strong>Info: </strong>
+        <p>
+            Lors de la création d'un utilisateur, le mot de passe est automatiquement créé. <br>
+            Veuillez le communiquer à l'utilisateur pour qu'il le change rapidement. <br>
+            MDP: RockAndRoll
+        </p> 
+    </div>
+    {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
+        <div class="mb-3">
+            <label for="user_username" class="form-label">Nom d'utilisateur</label>
+            {{ form_widget(form.username, {'attr': {'class': 'form-control'}}) }}
+        </div>
+        <div class="mb-3">
+            <label for="user_role" class="form-label">Role</label>
+            {{ form_widget(form.roles, {'attr': {'class': 'form-control'}}) }}
+        </div>
+        <div class="mb-3">
+            <label for="user_email" class="form-label">Email</label>
+            {{ form_widget(form.email, {'attr': {'class': 'form-control'}}) }}
+        </div>
+        <div class="mb-3">
+            <input type="submit" class="btn btn-secondary" value="Save">
+        </div>
+    {{ form_end(form) }}
+</div>
+{% endblock %}

@@ -1,0 +1,153 @@
+{% extends "default/admin/layout.html.twig" %}
+{% block stylesheets %}
+    <link href="https://unpkg.com/tabulator-tables@4.9.3/dist/css/tabulator.min.css" rel="stylesheet">
+{% endblock %}
+{% block body %}
+    <h1>{{ playlist.title }}</h1>
+    <div class="col-11 mb-3">
+        <p>{{ playlist.description }}</p>
+    </div>
+    <div class="col-11 mb-3">
+        <button class="btn btn-sm btn-secondary" data-bs-toggle="modal" data-bs-target="#addTrackModal">Add track</button>
+    </div>
+    {% if playlist.tracks %}
+        <div class="col-11 mb-3">
+            <table class="table table-sm" id="playlist-table">
+                <thead><tr><th></th><th>Artist</th><th>Title</th><th>Del</th></tr></thead>
+                <tbody>
+                    {% for item in playlist.tracks %}
+                        <tr>
+                            <td>{{ item.id }}</td>
+                            <td>{{ item.artist }}</td>
+                            <td>{{ item.title }}</td>
+                            <td></td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% endif %}
+    <div class="modal" id="addTrackModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Select tracks</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                <div class="col-12 mb-3">
+                    {% if musicgame.tracks|length > 0 %}
+                        <table id="tracks-table">
+                            <thead>
+                                <tr><th></th><th>Artist</th><th>Title</th></tr>
+                            </thead>
+                            <tbody>
+                                {% for track in musicgame.tracks %}
+                                    {% if track not in playlist.tracks %}
+                                    <tr>
+                                        <td>{{ track.id }}</td>
+                                        <td>{{ track.artist }}</td>
+                                        <td>{{ track.title }}</td>
+                                    </tr>
+                                    {% endif %}
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    
+                    {% else %}
+                       <p>No track found for this game. Go here to edit tracks first.</p> 
+                    {% endif %}
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" id="save-tracks" class="btn btn-primary">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block javascripts %}
+    <script type="text/javascript" src="https://unpkg.com/tabulator-tables@4.9.3/dist/js/tabulator.min.js"></script>
+    <script>
+        var table = new Tabulator("#playlist-table", {
+            autoResize:true,
+            pagination:"local",
+            paginationSize:25,
+            paginationSizeSelector:[25, 50, 100],
+            movableColumns:false,
+            layout:"fitColumns",
+            columns:[
+                {title:"", field:"id", width:40},
+                {title:"Artist", field:"artist", hozAlign:"left", headerFilter:true, headerFilterPlaceholder:"The artist to search"},
+                {title:"Title", field:"title", headerFilter:true, headerFilterPlaceholder:"The title to search"},
+                {title:"Del", field:"del", hozAlign:"center", width:40, formatter:"tickCross", 
+                    cellClick:function(e, cell){
+                        let data = cell.getRow().getData();
+                        appDeleteData(data);
+                    }
+                }
+            ]
+        });
+
+        var table = new Tabulator("#tracks-table", {
+            autoResize:true,
+            pagination:"local",
+            paginationSize:25,
+            paginationSizeSelector:[25, 50, 100],
+            movableColumns:false,
+            layout:"fitColumns",
+            selectable:true,
+            columns:[
+                {title:"", field:"id", width:20},
+                {title:"Artist", field:"artist", hozAlign:"left", headerFilter:true, headerFilterPlaceholder:"The artist to search"},
+                {title:"Title", field:"title", headerFilter:true, headerFilterPlaceholder:"The title to search"},
+            ]
+        });
+        sort();
+        function sort()
+        {
+            table.setSort([
+                {column:"artist", dir:"asc"}
+            ]);
+        }
+
+        let saveBtn = document.getElementById('save-tracks');
+        saveBtn.addEventListener('click', function(){
+            var selectedData = table.getSelectedData();
+            appUpdateData(selectedData);
+        })
+        
+        function appUpdateData(data)
+        {
+            var url = "{{ path ('playlist_ajax_add_tracks', { slug:musicgame.slug, id:playlist.id }) }}";
+            var dataToSave = JSON.stringify(data);
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                    console.log(this.responseText);
+                    document.location.reload();
+                }
+            };
+            xhttp.open("POST", url, true);
+            xhttp.setRequestHeader("Content-type", 'application/x-www-form-urlencoded; charset=utf-8');
+            xhttp.send(dataToSave);
+        }
+        
+        function appDeleteData(data)
+        {
+            var url = "{{ path ('playlist_ajax_delete_tracks', { slug:musicgame.slug, id:playlist.id }) }}";
+            var dataToSave = JSON.stringify(data);
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                    console.log(this.responseText);
+                    document.location.reload();
+                }
+            };
+            xhttp.open("POST", url, true);
+            xhttp.setRequestHeader("Content-type", 'application/x-www-form-urlencoded; charset=utf-8');
+            xhttp.send(dataToSave);
+        }
+    </script>
+{% endblock %}

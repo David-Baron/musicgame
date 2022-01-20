@@ -1,0 +1,142 @@
+{% extends "default/admin/layout.html.twig" %}
+{% block stylesheets %}
+    <link href="https://unpkg.com/tabulator-tables@4.9.3/dist/css/tabulator.min.css" rel="stylesheet">
+{% endblock %}
+{% block body %}
+    <h1>{{ musicgame.name }} track list</h1>
+    <div class="col-11 mb-3">
+        {% for label, messages in app.flashes %}
+            {% for message in messages %}
+                <div class="alert alert-{{ label }} alert-dismissible fade show">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endfor %}
+        {% endfor %}
+    </div>
+    <div class="col-11 mb-3">
+        <button  data-bs-toggle="modal" data-bs-target="#addTrackModal" class="btn btn-sm btn-secondary">Add track</button>
+        <a href="{{ path ('admin_musicgame_game_track_import', { slug:musicgame.slug }) }}" class="btn btn-sm btn-secondary">Import csv tracks</a>
+    </div>
+    {% if musicgame.tracks|length > 0 %}
+        <div class="col-11 mb-3">
+            <table id="tracks-table">
+                <thead>
+                    <tr><th></th><th>Artist</th><th>Title</th><th>Online</th><th>Delete</th></tr>
+                </thead>
+                <tbody>
+                    {% for track in musicgame.tracks %}
+                        <tr>
+                            <td>{{ track.id }}</td>
+                            <td>{{ track.artist }}</td>
+                            <td>{{ track.title }}</td>
+                            <td>{{ track.isOnline }}</td>
+                            <td></td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% endif %}
+    <div class="modal" id="addTrackModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">New Track</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                {{ form_start(trackForm) }}
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="rocksmith_track_artist" class="form-label">Artist</label>
+                        {{ form_widget(trackForm.artist, {'attr': {'class': 'form-control'}}) }}
+                    </div>
+                    <div class="mb-3">
+                        <label for="rocksmith_track_title" class="form-label">Title</label>
+                        {{ form_widget(trackForm.title, {'attr': {'class': 'form-control'}}) }}
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="mb-3">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-secondary">Save</button>
+                    </div>
+                </div>
+                {{ form_end(trackForm) }}
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block javascripts %}
+    <script type="text/javascript" src="https://unpkg.com/tabulator-tables@4.9.3/dist/js/tabulator.min.js"></script>
+    <script>
+        var table = new Tabulator("#tracks-table", {
+            autoResize:true,
+            pagination:"local",
+            paginationSize:25,
+            paginationSizeSelector:[25, 50, 100],
+            movableColumns:false,
+            layout:"fitColumns",
+            columns:[
+                {title:"", field:"id", width:20},
+                {title:"Artist", field:"artist", hozAlign:"left", headerFilter:true, headerFilterPlaceholder:"The artist to search"},
+                {title:"Title", field:"title", headerFilter:true, headerFilterPlaceholder:"The title to search", editor:"input", 
+                    cellEdited:function(cell){
+                        let data = cell.getRow().getData();
+                        appUpdateData(data);
+                    }},
+                {title:"Online", field:"isOnline", hozAlign:"center", width:100, formatter:"tickCross", editor:true, headerFilter:true, 
+                    cellEdited:function(cell){
+                        let data = cell.getRow().getData();
+                        appUpdateData(data);
+                    }
+                },
+                {title:"Delete", field:"", hozAlign:"center", width:100, formatter:"tickCross", 
+                    cellClick:function(e, cell){
+                        let data = cell.getRow().getData();
+                        appDeleteData(data);
+                    }
+                }
+            ]
+        });
+        sort();
+        function sort()
+        {
+            table.setSort([
+                {column:"artist", dir:"asc"}
+            ]);
+        }
+        function appUpdateData(data)
+        {
+            var dataToSave = JSON.stringify({id:data.id, title:data.title, isOnline:data.isOnline});
+            console.log(dataToSave);
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                    console.log(this.responseText);
+                } else {
+                     console.log(this.responseText);
+                }
+            };
+            xhttp.open("POST", "/admin/musicgames/{{ musicgame.slug }}/tracks/track-ajax-update", true);
+            xhttp.setRequestHeader("Content-type", 'application/x-www-form-urlencoded; charset=utf-8');
+            xhttp.send(dataToSave);
+        }
+        function appDeleteData(data)
+        {
+            var dataToDelete = JSON.stringify({id:data.id});
+            console.log(dataToDelete);
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                    var row = table.searchRows("id", "=", data.id);
+                    table.deleteRow(row);
+                    console.log(this.responseText);
+                }
+            };
+            xhttp.open("POST", "/admin/musicgames/{{ musicgame.slug }}/tracks/track-ajax-delete", true);
+            xhttp.setRequestHeader("Content-type", 'application/x-www-form-urlencoded; charset=utf-8');
+            xhttp.send(dataToDelete);
+        }
+    </script>
+{% endblock %}

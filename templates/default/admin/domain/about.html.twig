@@ -1,0 +1,23 @@
+{% extends "default/admin/layout.html.twig" %}
+{% block body %}
+<div class="col-6 mb-3">
+<h1>About</h1>
+<div class="alert alert-info" role="alert">
+    <strong>Name: </strong> {{ application.name}} <br>
+    <strong>Owner: </strong> {{ application.owner}} <br>
+    <strong>Version: </strong> {{ application.version}}
+</div>
+{% if application.hasUpdate %}
+    <div class="alert alert-warning" role="alert">
+        <strong>Musicgame update is available!</strong>
+        <p>  
+            <a href="{{ path ('admin_app_update') }}" class="btn btn-sm btn-secondary">Update now </a><br>
+        </p>
+    </div>
+{% else %}
+    <div class="alert alert-success" role="alert">
+        Musicgame is up to date!
+    </div>
+{% endif %}
+</div>
+{% endblock %}

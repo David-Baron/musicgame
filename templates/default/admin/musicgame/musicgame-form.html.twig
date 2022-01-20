@@ -1,0 +1,42 @@
+{% extends "default/admin/layout.html.twig" %}
+{% block body %}
+    <h1>Musicgames</h1>
+    <div class="col-11 mb-3">
+        {% for label, messages in app.flashes %}
+            {% for message in messages %}
+                <div class="alert alert-{{ label }} alert-dismissible fade show">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endfor %}
+        {% endfor %}
+    </div>
+    {{ form_start(musicgameForm, {'attr': {'novalidate': 'novalidate'}}) }}
+    <div class="row mb-3">
+        <div class="col-lg-3">
+            <img src="/images/musicgame-default.png" class="img-fluid" alt="musicgame">
+        </div>
+        <div class="col-lg-6">
+            <div class="mb-3">
+                <label for="musicgame_name" class="form-label">Nom</label>
+                {{ form_widget(musicgameForm.name, {'attr': {'class': 'form-control'}}) }}
+            </div>
+            <div class="mb-3">
+                <label for="musicgame_thumbnail" class="form-label">Photo</label>
+                {{ form_widget(musicgameForm.thumbnail, {'attr': {'class': 'form-control'}}) }}
+            </div>
+        </div>
+     
+    </div>
+    <div class="row mb-3">
+            <div class="col-lg-9 mb-3">
+                <label for="musicgame_description" class="form-label">Description</label>
+                {{ form_widget(musicgameForm.description, {'attr': {'class': 'form-control'}}) }}
+            </div>
+            <div class="mb-3">
+                <input type="submit" class="btn btn-secondary" value="Save">
+            </div>
+    
+    </div>
+    {{ form_end(musicgameForm) }}
+{% endblock %}

@@ -1,0 +1,36 @@
+{% extends "default/admin/layout.html.twig" %}
+{% block body %}
+    <h1>Themes</h1>
+    <div class="col-10">
+        {% if themes %}
+            {% for theme in themes %}
+                <div class="card mb-3" style="max-width: 540px;">
+                    <div class="row g-0">
+                        <div class="col-md-4">
+                        <img src="..." alt="...">
+                        </div>
+                        <div class="col-md-8">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ theme.name }} theme</h5>   
+                            <p class="card-text">
+                                {% if theme.type == 'default' %}
+                                    <span class="badge bg-primary"> Dist </span>
+                                {% else %}
+                                    <span class="badge bg-info"> Private </span>
+                                {% endif %}
+                                
+                                {% if theme.active %}
+                                    <span class="badge bg-success"> Active </span>
+                                {% else %}
+                                    <span class="badge bg-danger"> Activate </span>
+                                {% endif %}
+                            </p>
+                            <p class="card-text"> {{ theme.description }}</p>
+                        </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        {% endif %}
+    </div>
+{% endblock %}

@@ -1,0 +1,78 @@
+{% extends "default/admin/layout.html.twig" %}
+{% block body %}
+    <h1>{{ musicgame.name }}</h1>
+    <div class="col-11 mb-3">
+        {% for label, messages in app.flashes %}
+            {% for message in messages %}
+                <div class="alert alert-{{ label }} alert-dismissible fade show">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endfor %}
+        {% endfor %}
+    </div>
+    <div class="col-11 mb-3">
+        <a class="btn btn-sm btn-secondary" href="{{ path ('admin_musicgame_game_track_list', { slug: musicgame.slug }) }}">Track list</a>
+        <button class="btn btn-sm btn-secondary" data-bs-toggle="modal" data-bs-target="#createPlaylistModal">Create playlist</button>
+    </div>
+    {% if musicgame.playlists|length > 0 %}
+        <div class="col-11 mb-3">
+            <h2>Playlists</h2>
+            <table class="table table-sm table-striped">
+                <thead><tr><th></th><th>Title</th><th>Description</th><th>Auto del</th><th></th></tr></thead>
+                <tbody>
+                    {% for playlist in musicgame.playlists %}
+                        <tr>
+                            <td></td>
+                            <td>{{ playlist.title }}</td>
+                            <td>{{ playlist.description }}</td>
+                            <td>
+                                {% if playlist.isAutodelete == true %}
+                                    <button type="button" class="btn btn-sm btn-success"> V </button>
+                                {% else %}
+                                    <button type="button" class="btn btn-sm btn-danger"> X </button>
+                                {% endif %}
+                            </td>
+                            <td>
+                                <div class="btn-group btn-group-sm" role="group" aria-label="Basic example">
+                                    <a href="{{ path ('admin_musicgame_game_playlist_edit', { slug:musicgame.slug, id:playlist.id }) }}" class="btn btn-primary">Edit tracks</a>
+                                    <a href="{{ path ('admin_musicgame_game_playlist_delete', { slug:musicgame.slug, id:playlist.id }) }}" class="btn btn-primary">Delete</a>
+                                </div>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% endif %}
+    <div class="modal" id="createPlaylistModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">New playlist</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                {{ form_start(playlistForm) }}
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="rocksmith_playlist_title" class="form-label">Title</label>
+                        {{ form_widget(playlistForm.title, {'attr': {'class': 'form-control'}}) }}
+                    </div>
+                    <div class="mb-3">
+                        <label for="rocksmith_playlist_description" class="form-label">Description</label>
+                        {{ form_widget(playlistForm.description, {'attr': {'class': 'form-control'}}) }}
+                    </div>
+                    <div class="mb-3">
+                        <label for="rocksmith_playlist_isAutodelete" class="form-label">Auto delete track ?</label>
+                        {{ form_widget(playlistForm.isAutodelete, {'attr': {'class': 'form-control'}}) }}
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Save</button>
+                </div>
+            </div>
+            {{ form_end(playlistForm) }}
+        </div>
+    </div>
+{% endblock %}

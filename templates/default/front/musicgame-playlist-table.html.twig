@@ -1,0 +1,71 @@
+{% extends "default/front/layout.html.twig" %}
+{% block stylesheets %}
+    <link href="https://unpkg.com/tabulator-tables@4.9.3/dist/css/tabulator.min.css" rel="stylesheet">
+{% endblock %}
+{% block title %}Le ouèbsite | {{ playlist.musicgame.name }} - {{ playlist.title }}{% endblock %}
+{% block body %}
+    <h1>{{ playlist.musicgame.name }} - {{ playlist.title }}</h1>
+    <div class="alert alert-info" role="alert">
+        <strong>!sr artiste - morceau</strong> : Ajoute votre requête à la liste. <br>
+        <strong>!sr artiste *any</strong> : Ajoute une requête d'un artiste de votre choix + le morceau au choix du streameur.<br>
+        <strong>!sr *any</strong> : Ajoute une requête au choix du streameur.<br>
+        <strong>!tracklist</strong> : Affiche la liste des morceaux.<br>
+        <strong>!vip artiste - morceau</strong> : Ajoute une requête VIP en tête de liste (utilise un point VIP obtenu avec un follow/sub/cheer).<br>
+    </div>
+    {% if playlist.tracks %}
+    <div class="col-12 mb-3">
+        <table class="table table-sm" id="playlist-table">
+            <thead><tr><th>Artist</th><th>Title</th><th></th></tr></thead>
+            <tbody>
+                {% for item in playlist.tracks %}
+                    <tr>
+                        <td>{{ item.artist }}</td>
+                        <td>{{ item.title }}</td>
+                        <td></td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% endif %}
+    <input id="input-command" type="text" readonly style="border:none;"/>
+{% endblock %}
+{% block javascripts %}
+    <script type="text/javascript" src="https://unpkg.com/tabulator-tables@4.9.3/dist/js/tabulator.min.js"></script>
+    <script>
+        var table = new Tabulator("#playlist-table", {
+            autoResize:true,
+            pagination:"local",
+            paginationSize:25,
+            paginationSizeSelector:[25, 50, 100],
+            movableColumns:false,
+            layout:"fitColumns",
+            columns:[
+                {title:"Artist", field:"artist", hozAlign:"left", headerFilter:true, headerFilterPlaceholder:"The artist to search"},
+                {title:"Title", field:"title", headerFilter:true, headerFilterPlaceholder:"The title to search"},
+                {title:"", field:"command", hozAlign:"center", width:100, headerSort:false, 
+                            formatter:function(cell, formatterParams){
+                                let data = cell.getRow().getData();
+                                return '<button class="badge bg-secondary sr" data-command="!sr ' + data.artist + ' - ' + data.title + '">!sr</button>';
+                            },
+                            cellClick:function(e, cell){
+                                var input = document.getElementById('input-command');
+                                input.value = e.target.getAttribute('data-command');
+                                e.preventDefault();
+                                var copyText = document.querySelector("#input-command");
+                                copyText.select();
+                                document.execCommand("copy");
+                                input.value = '';
+                            }
+                },
+            ]
+        });
+        sort();
+        function sort()
+        {
+            table.setSort([
+                {column:"artist", dir:"asc"}
+            ]);
+        }
+    </script>
+{% endblock %}
