@@ -22,7 +22,7 @@ if confirm "\n\033[01;34m[INFO] Execute ?"; then
     echo -e "\n\033[00;32m[SUCCESS] Composer self update done\033[00m\n"
 
     echo -e "\n\033[01;34m[INFO] Downloading vendors\033[00m\n"
-    composer install --prefer-dist --optimize-autoloader
+    composer install --no-progress --prefer-dist --optimize-autoloader
 
     echo -e "\n\033[00;32m[SUCCESS] Install dependencies done\033[00m\n"
 
