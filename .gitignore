@@ -20,4 +20,5 @@
 /__storage
 /__devtool
 /migrations/*
+!/migrations/.gitignore
 ###< application ###
