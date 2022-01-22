@@ -26,10 +26,11 @@ if confirm "\n\033[01;34m[INFO] Execute ?"; then
 
     echo -e "\n\033[00;32m[SUCCESS] Install dependencies done\033[00m\n"
 
-    echo -e "\n\033[01;34m[INFO] Create the local storage\033[00m\n"
+    echo -e "\n\033[01;34m[INFO] Create the local storages\033[00m\n"
     mkdir __storage
+    mkdir migrations
 
-    echo -e "\n\033[00;32m[SUCCESS] Local storage created done\033[00m\n"
+    echo -e "\n\033[00;32m[SUCCESS] Local storages created done\033[00m\n"
 
     echo -e "\n\033[01;34m[INFO] Create the database\033[00m\n"
     php bin/console d:d:c
