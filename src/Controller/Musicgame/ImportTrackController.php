@@ -20,6 +20,7 @@ class ImportTrackController extends AdminController
         $this->musicgameRepository = $musicgameRepository;
         $this->em = $em;
     }
+
     /**
      * @Route("/admin/musicgames/{slug}/tracks/import", name="admin_musicgame_game_track_import", methods={"GET","POST"})
      */
@@ -57,35 +58,35 @@ class ImportTrackController extends AdminController
     {
         $this->em->getConnection()->getConfiguration()->setSQLLogger(null);
         $csv = fopen($this->getParameter('upload_directory').$filename, 'r');
-                    $t = 0;
-                    $headers = [];
-                    while (!feof($csv)) {
-                        $row = fgetcsv($csv, 0, ';', '"');
-                        if (empty($headers))
-                            $headers = $row;
-                        else if (is_array($row)) {
-                            
-                            $track = new MusicgameTrack();
-                            $track->setArtist($row[0]);
-                            $track->setTitle($row[1]);
-                            $track->setIsOnline(0);
-                            $track->setFullname($track->getArtist().' - '.$track->getTitle());
-                            //$track->setMusicgame($musicgame);
-                            $musicgame->addTrack($track);
-                            //$em->persist($track);
-                            $this->em->flush();
-                        }
-                       /*  if (($t % 50 === 0)) {
-                            $em->flush();
-                            $em->clear();
-                        }
-                        $t++; */
-                    }
-                    $t=0;   
-                    fclose($csv);
-                    //$em->flush();
-                    $this->em->clear();
-                    unlink($this->getParameter('upload_directory').$filename);
+        $t = 0;
+        $headers = [];
+        while (!feof($csv)) {
+            $row = fgetcsv($csv, 0, ';', '"');
+            if (empty($headers))
+                $headers = $row;
+            else if (is_array($row)) {
+                
+                $track = new MusicgameTrack();
+                $track->setArtist($row[0]);
+                $track->setTitle($row[1]);
+                $track->setIsOnline(0);
+                $track->setFullname($track->getArtist().' - '.$track->getTitle());
+                //$track->setMusicgame($musicgame);
+                $musicgame->addTrack($track);
+                //$em->persist($track);
+                $this->em->flush();
+            }
+            /*  if (($t % 50 === 0)) {
+                $em->flush();
+                $em->clear();
+            }
+            $t++; */
+        }
+        $t=0;   
+        fclose($csv);
+        //$em->flush();
+        $this->em->clear();
+        unlink($this->getParameter('upload_directory').$filename);
     }
 
     private function generateFileName($inputFileName, $partNumber)

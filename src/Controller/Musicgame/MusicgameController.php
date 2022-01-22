@@ -22,6 +22,7 @@ class MusicgameController extends AdminController
         $this->musicgameRepository = $musicgameRepository;
         $this->em = $em;
     }
+    
     /**
      * @Route("/admin/musicgames", name="admin_musicgame_list", methods={"GET"})
      */
@@ -90,6 +91,5 @@ class MusicgameController extends AdminController
             'playlistForm' => $playlistForm->createView()
         ]);
     }
-
     
 }
