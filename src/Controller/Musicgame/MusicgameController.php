@@ -80,7 +80,6 @@ class MusicgameController extends AdminController
         $playlistForm->handleRequest($request);
         if ($playlistForm->isSubmitted() && $playlistForm->isValid()) {
             $playlist = $playlistForm->getData();
-            dd($playlist);
             $playlist->setTitle(ucfirst($playlist->getTitle()));
             $this->em->persist($playlist);
             $this->em->flush();
