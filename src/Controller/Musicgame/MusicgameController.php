@@ -83,7 +83,7 @@ class MusicgameController extends AdminController
             $playlist->setTitle(ucfirst($playlist->getTitle()));
             $this->em->persist($playlist);
             $this->em->flush();
-            return $this->redirectToRoute('rocksmith_dashboard');
+            return $this->redirectToRoute('admin_musicgame_game_dashboard', [ 'slug' => $musicgame->getSlug()]);
         }
         return $this->returnView('musicgame/game-dashboard.html.twig', [
             'musicgame' => $musicgame,
