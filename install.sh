@@ -27,7 +27,7 @@ if confirm "\n\033[01;34m[INFO] Execute ?"; then
     echo -e "\n\033[00;32m[SUCCESS] Install dependencies done\033[00m\n"
 
     echo -e "\n\033[01;34m[INFO] Create the local storage\033[00m\n"
-    mk dir __storage
+    mkdir __storage
 
     echo -e "\n\033[00;32m[SUCCESS] Local storage created done\033[00m\n"
 
