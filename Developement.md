@@ -8,9 +8,10 @@
 
 ## Install
 
-- Rename the env.dist file to .env
+- Rename the env.dist file to .env (if the .env file don't exist)
+- You can rename or use an other driver the database name at your convenience.
 
-- ### Auto installer
+### Auto installer
 
 - You can install with one of the install script file located at the base project directory.
 

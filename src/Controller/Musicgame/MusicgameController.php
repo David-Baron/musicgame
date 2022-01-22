@@ -80,7 +80,7 @@ class MusicgameController extends AdminController
         $playlistForm->handleRequest($request);
         if ($playlistForm->isSubmitted() && $playlistForm->isValid()) {
             $playlist = $playlistForm->getData();
-            $playlist->setName(ucfirst($playlist->getName()));
+            $playlist->setTitle(ucfirst($playlist->getTitle()));
             $this->em->persist($playlist);
             $this->em->flush();
             return $this->redirectToRoute('rocksmith_dashboard');
