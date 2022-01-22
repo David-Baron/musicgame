@@ -36,7 +36,8 @@ class MusicgamePlaylistController extends AdminController
     }
 
     /**
-     * @Route("/admin/musicgames/{slug}/playlists/{id}-delete", name="admin_musicgame_game_playlist_delete", methods={"POST"})
+     * @Route("/admin/musicgames/{slug}/playlists/{id}-delete", name="admin_musicgame_game_playlist_delete", methods={"GET"})
+     * TODO : will be with POST method.
      */
     public function delete(Request $request)
     {
