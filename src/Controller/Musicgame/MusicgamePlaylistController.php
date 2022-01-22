@@ -21,6 +21,7 @@ class MusicgamePlaylistController extends AdminController
         $this->musicgamePlaylistRepository = $musicgamePlaylistRepository;
         $this->em = $em;
     }
+    
     /**
      * @Route("/admin/musicgames/{slug}/playlists/{id}/tracks", name="admin_musicgame_game_playlist_edit", methods={"GET","POST"})
      */

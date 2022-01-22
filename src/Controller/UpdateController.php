@@ -14,8 +14,8 @@ class UpdateController extends AdminController
     {
         // Implement the process here
 
-        // make backup
-        // download package
+        // make manual backup never more auto backup!
+        // download last package
         // unzip package
         // replace files
         // make migrations
