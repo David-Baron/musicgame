@@ -45,7 +45,7 @@ class MusicgamePlaylistController extends AdminController
         $this->em->remove($playlist);
         $this->em->flush();
         $this->addFlash('success', 'The playlist is removed!');
-        return $this->redirectToRoute('musicgame/admin_musicgame_game_dashboard');
+        return $this->redirectToRoute('admin_musicgame_game_dashboard');
     }
 
     /**
