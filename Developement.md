@@ -8,8 +8,8 @@
 
 ## Install
 
-- Rename the env.dist file to .env (if the .env file don't exist)
-- You can rename or use an other driver the database name at your convenience.
+- Rename the env.dist file to .env (if the .env file don't exist). [Doc](https://symfony.com/doc/5.4/configuration.html)
+- You can rename or use an other driver the database name at your convenience. [Doc](https://symfony.com/doc/5.4/doctrine.html#configuring-the-database)
 
 ### Auto installer
 
@@ -19,7 +19,7 @@
 
 - clone github package
 - install vendors:         `composer install`
-- create storage dir:      `mk dir __storage`
+- create storage dir:      `/__storage`
 - create database:         `php bin/console d:d:c`
 - create migration:        `php bin/console make:migration`
 - migrate migrations:      `php bin/console d:m:m`
