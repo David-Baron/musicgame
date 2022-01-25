@@ -26,7 +26,7 @@ class GithubService
         $response = $client->request('GET', 'https://api.github.com/repos/'.$this->owner.'/'.$this->repos.'/releases');
 
         $statusCode = $response->getStatusCode();
-        if ($statusCode === 200) {
+        if ($statusCode === 200 && null != $response->toArray()) {
             $latest = $response->toArray()[0];
             $this->latestReleaseTag = $latest['tag_name'];
             $this->tarPath = $latest['tarball_url'];

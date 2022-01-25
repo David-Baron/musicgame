@@ -2,7 +2,8 @@ parameters:
     upload_directory: '../__storage/'
     'app.owner': 'live-tools'
     'app.name': 'musicgame'
-    'app.version': 'GPL-2'
+    'app.license': 'GPL-2'
+    'app.version': '0.0.0'
 services:
     _defaults:
         autowire: true      
