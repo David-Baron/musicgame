@@ -35,6 +35,7 @@ class InstallFixtures extends Fixture
             ['name'=>'website_name', 'value'=>'My website', 'description' => 'The website name.'],
             ['name'=>'website_title', 'value'=>'Beautiful website', 'description' => 'The website title.'],
             ['name'=>'website_templates', 'value'=>'default', 'description' => 'The templates name. By default: default.'],
+            ['name'=>'website_icon', 'value'=>'musicgame.png', 'description' => 'The website icon. By default: musicgame.png.'],
         ];
         foreach ($settings as $entry) {
             $setting = new Setting;
