@@ -20,7 +20,7 @@ class InstallFixtures extends Fixture
     {
         $user = new User();
         $user->setUsername('admin');
-        $user->setRoles(['ROLE_ADMIN']);
+        $user->setRoles(['ROLE_SUPER_ADMIN']);
         $user->setEmail('admin@admin.com');
         $user->setPassword($this->passwordEncoder->hashPassword(
             $user,
