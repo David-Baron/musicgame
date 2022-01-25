@@ -1,8 +1,8 @@
 parameters:
     upload_directory: '../__storage/'
-    'app.owner': 'David-Baron'
-    'app.name': 'Musicgame'
-    'app.version': '1.0.0'
+    'app.owner': 'live-tools'
+    'app.name': 'musicgame'
+    'app.version': 'GPL-2'
 services:
     _defaults:
         autowire: true      
@@ -22,8 +22,8 @@ services:
 
     App\Service\GithubService:
         arguments:
-            $owner: 'David-Baron'
-            $repos: 'Musicgame'
+            $owner: 'live-tools'
+            $repos: 'musicgame'
             $compressor: 'zip'
 
     App\Service\CsvFileUploader:

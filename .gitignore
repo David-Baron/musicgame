@@ -22,3 +22,4 @@
 /migrations/*
 !/migrations/.gitignore
 ###< application ###
+/TODO
