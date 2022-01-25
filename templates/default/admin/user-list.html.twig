@@ -43,39 +43,39 @@
     <script type="text/javascript" src="https://unpkg.com/tabulator-tables@4.9.3/dist/js/tabulator.min.js"></script>
     <script>
         var table = new Tabulator("#users_table", {
-            autoResize:true,
+            autoResize: true,
             /* pagination:"local",
             paginationSize:25,
             paginationSizeSelector:[25, 50, 100], */
-            movableColumns:false,
-            layout:"fitColumns",
-            columns:[
-                {title:"", field:"id", visible:false},
-                {title:"Username", field:"username"},
-                {title:"Role", field:"roles", editor:"select", 
-                    editorParams:{
-                        values:{
-                            "Administrateur":"Administrateur",
-                            "Moderateur":"Moderateur",
-                            "Utilisateur":"Utilisateur"
+            movableColumns: false,
+            layout: "fitColumns",
+            columns: [
+                { title: "", field: "id", visible: false },
+                { title: "Username", field: "username" },
+                {
+                    title: "Role", field: "roles", editor: "select",
+                    editorParams: {
+                        values: {
+                            "Administrateur": "Administrateur",
+                            "Moderateur": "Moderateur",
+                            "Utilisateur": "Utilisateur"
                         }
                     },
-                    cellEdited:function(cell){
+                    cellEdited: function (cell) {
                         let data = cell.getRow().getData();
                         console.log(data);
                         appUpdateData(data);
                     }
                 },
-                {title:"Email", field:"email"},
+                { title: "Email", field: "email" },
             ]
         });
 
-        function appUpdateData(data)
-        {
-            var dataToSave = JSON.stringify({id:data.id, role:data.roles});
+        function appUpdateData(data) {
+            var dataToSave = JSON.stringify({ id: data.id, role: data.roles });
             console.log(dataToSave);
             var xhttp = new XMLHttpRequest();
-            xhttp.onreadystatechange = function() {
+            xhttp.onreadystatechange = function () {
                 if (this.readyState == 4 && this.status == 200) {
                     console.log(this.responseText);
                 }
