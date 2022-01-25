@@ -44,9 +44,9 @@
     <script>
         var table = new Tabulator("#users_table", {
             autoResize:true,
-            pagination:"local",
+            /* pagination:"local",
             paginationSize:25,
-            paginationSizeSelector:[25, 50, 100],
+            paginationSizeSelector:[25, 50, 100], */
             movableColumns:false,
             layout:"fitColumns",
             columns:[
@@ -57,7 +57,7 @@
                         values:{
                             "Administrateur":"Administrateur",
                             "Moderateur":"Moderateur",
-                            "Utilisateur":"Utilisateur",
+                            "Utilisateur":"Utilisateur"
                         }
                     },
                     cellEdited:function(cell){
