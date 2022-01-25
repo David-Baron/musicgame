@@ -7,7 +7,7 @@ use App\Form\ProfileType;
 use App\Form\ChangePasswordType;
 use App\Repository\UserRepository;
 use App\Controller\AdminController;
-use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
@@ -15,12 +15,12 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 class UserController extends AdminController
 {   
     protected UserRepository $userRepository;
-    protected ManagerRegistry $doctrine;
+    protected EntityManagerInterface $em;
     
-    public function __construct(UserRepository $userRepository, ManagerRegistry $doctrine)
+    public function __construct(UserRepository $userRepository, EntityManagerInterface $em)
     {
         $this->userRepository = $userRepository;
-        $this->doctrine = $doctrine;
+        $this->em = $em;
     }
     
     /**
@@ -91,9 +91,8 @@ class UserController extends AdminController
                     $user->setRoles(['ROLE_USER']);
                     break;
             }
-            $em = $this->doctrine->getManager();
-            $em->persist($user);
-            $em->flush();
+            $this->em->persist($user);
+            $this->em->flush();
             $callback = [
                 'success' => true,
                 'status' => 'Ok Request',
@@ -126,9 +125,8 @@ class UserController extends AdminController
         $profileForm->handleRequest($request);
         if ($profileForm->isSubmitted() && $profileForm->isValid()) {
             $user = $profileForm->getData();
-            $em = $this->doctrine->getManager();
-            $em->persist($user);
-            $em->flush();
+            $this->em->persist($user);
+            $this->em->flush();
 
             return $this->redirectToRoute('admin_user_user_profile');
         }
@@ -144,9 +142,8 @@ class UserController extends AdminController
                     $user,
                     $passwords['newPassword']
                 ));
-                $em = $this->doctrine->getManager();
-                $em->persist($user);
-                $em->flush();
+                $this->em->persist($user);
+                $this->em->flush();
                 return $this->redirectToRoute('app_logout');
             }
             // Else nothing append! actual password is wrong
