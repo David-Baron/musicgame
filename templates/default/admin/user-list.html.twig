@@ -12,7 +12,7 @@
                 </thead>
                 <tbody>
                     {% for user in users %}
-                        {% if user != app.user %}
+                        {% if user.username != app.user.username %}
                             <tr>
                                 <td>{{ user.id }}</td>
                                 <td>{{ user.username }}</td>
