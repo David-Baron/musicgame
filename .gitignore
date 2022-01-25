@@ -23,3 +23,4 @@
 !/migrations/.gitignore
 ###< application ###
 /TODO
+/src/Util/RoleDTO.php
