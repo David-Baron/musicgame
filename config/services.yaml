@@ -1,5 +1,6 @@
 parameters:
     upload_directory: '../__storage/'
+    images_directory: '../public/images/'
     'app.owner': 'live-tools'
     'app.name': 'musicgame'
     'app.license': 'GPL-2'
