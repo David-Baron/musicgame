@@ -11,6 +11,7 @@
             {% endfor %}
         {% endfor %}
     </div>
+    {% form_theme musicgameForm 'bootstrap_5_layout.html.twig' %}
     {{ form_start(musicgameForm, {'attr': {'novalidate': 'novalidate'}}) }}
     <div class="row mb-3">
         <div class="col-lg-3">
@@ -20,10 +21,12 @@
             <div class="mb-3">
                 <label for="musicgame_name" class="form-label">Nom</label>
                 {{ form_widget(musicgameForm.name, {'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(musicgameForm.name) }}
             </div>
             <div class="mb-3">
-                <label for="musicgame_thumbnail" class="form-label">Photo</label>
-                {{ form_widget(musicgameForm.thumbnail, {'attr': {'class': 'form-control'}}) }}
+                <label for="musicgame_imageFile" class="form-label">Photo</label>
+                {{ form_widget(musicgameForm.imageFile, {'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(musicgameForm.imageFile) }}
             </div>
         </div>
      
@@ -32,6 +35,7 @@
             <div class="col-lg-9 mb-3">
                 <label for="musicgame_description" class="form-label">Description</label>
                 {{ form_widget(musicgameForm.description, {'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(musicgameForm.description) }}
             </div>
             <div class="mb-3">
                 <input type="submit" class="btn btn-secondary" value="Save">
