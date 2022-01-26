@@ -52,15 +52,18 @@
                     <h5 class="modal-title">New playlist</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
+                {% form_theme playlistForm 'bootstrap_5_layout.html.twig' %}
                 {{ form_start(playlistForm) }}
                 <div class="modal-body">
                     <div class="mb-3">
                         <label for="rocksmith_playlist_title" class="form-label">Title</label>
                         {{ form_widget(playlistForm.title, {'attr': {'class': 'form-control'}}) }}
+                        {{ form_errors(playlistForm.title) }}
                     </div>
                     <div class="mb-3">
                         <label for="rocksmith_playlist_description" class="form-label">Description</label>
                         {{ form_widget(playlistForm.description, {'attr': {'class': 'form-control'}}) }}
+                        {{ form_errors(playlistForm.description) }}
                     </div>
                     <div class="mb-3">
                         <label for="rocksmith_playlist_isAutodelete" class="form-label">Auto delete track ?</label>

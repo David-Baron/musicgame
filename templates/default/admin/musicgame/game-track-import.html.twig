@@ -13,9 +13,11 @@
 		{% endfor %}
 	</div>
 	<div class="col-11 mb-3">
+		{% form_theme importForm 'bootstrap_5_layout.html.twig' %}
 		{{ form_start(importForm) }}
             <div class="mb-3">
                 {{ form_widget(importForm.file, {'attr': {'class': 'form-control'}}) }}
+				{{ form_errors(importForm.file) }}
             </div>
             <div class="mb-3">
                 <input type="submit" class="btn btn-secondary" value="Save">
