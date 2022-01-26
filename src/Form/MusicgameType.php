@@ -15,15 +15,15 @@ class MusicgameType extends AbstractType
     {
         $builder
             ->add('name')
-            ->add('thumbnail', FileType::class, [
+            ->add('imageFile', FileType::class, [
                 'mapped' => false,
                 'required' => false,
                 'constraints' => [
                     new File([
                         'maxSize' => '1024k',
+                        // 280*200
                         'mimeTypes' => [
-                            'image/png',
-                            'image/jpg',
+                            'image/*'
                         ],
                         'mimeTypesMessage' => 'Please upload a valid image',
                     ])

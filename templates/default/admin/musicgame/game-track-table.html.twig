@@ -45,15 +45,18 @@
                     <h5 class="modal-title">New Track</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
+                {% form_theme trackForm 'bootstrap_5_layout.html.twig' %}
                 {{ form_start(trackForm) }}
                 <div class="modal-body">
                     <div class="mb-3">
                         <label for="rocksmith_track_artist" class="form-label">Artist</label>
                         {{ form_widget(trackForm.artist, {'attr': {'class': 'form-control'}}) }}
+                        {{ form_errors(trackForm.artist) }}
                     </div>
                     <div class="mb-3">
                         <label for="rocksmith_track_title" class="form-label">Title</label>
                         {{ form_widget(trackForm.title, {'attr': {'class': 'form-control'}}) }}
+                        {{ form_errors(trackForm.artist) }}
                     </div>
                 </div>
                 <div class="modal-footer">
