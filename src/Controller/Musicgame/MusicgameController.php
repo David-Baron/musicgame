@@ -7,11 +7,10 @@ use App\Entity\MusicgamePlaylist;
 use App\Controller\AdminController;
 use App\Form\MusicgamePlaylistType;
 use App\Repository\MusicgameRepository;
+use App\Service\ImageFileUploader;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\String\Slugger\SluggerInterface;
-use Symfony\Component\HttpFoundation\File\Exception\FileException;
 
 class MusicgameController extends AdminController
 {
@@ -40,10 +39,9 @@ class MusicgameController extends AdminController
     /**
      * @Route("/admin/musicgames/create", name="admin_musicgame_create", methods={"GET","POST"})
      */
-    public function create(Request $request, SluggerInterface $slugger)
+    public function create(Request $request,ImageFileUploader $imageFileUploader)
     {
         $newGame = new Musicgame();
-        $newGame->setThumbnail('musicgame.png');
         $musicgameForm = $this->createForm(MusicgameType::class, $newGame);
         $musicgameForm->handleRequest($request);
         if ($musicgameForm->isSubmitted() && $musicgameForm->isValid()) {
@@ -52,18 +50,8 @@ class MusicgameController extends AdminController
             // TODO Handle the thumbnail
             $imageFile = $musicgameForm->get('imageFile')->getData();
             if ($imageFile) {
-                $originalFilename = pathinfo($imageFile->getClientOriginalName(), PATHINFO_FILENAME);
-                $safeFilename = $slugger->slug($originalFilename);
-                $newFilename = $safeFilename .'.'. $imageFile->getClientOriginalExtension();
-                try {
-                    $imageFile->move(
-                        $this->getParameter('images_directory'),
-                        $newFilename
-                    );
-                } catch (FileException $e) {
-                    // ... handle exception if something happens during file upload
-                }
-                $newGame->setThumbnail($newFilename);
+                $filename = $imageFileUploader->upload($imageFile);
+                $newGame->setThumbnail($filename);
             }
             $this->em->persist($newGame);
             $this->em->flush();
