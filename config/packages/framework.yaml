@@ -17,3 +17,8 @@ framework:
         log: true
         
     validation: { enabled: true, enable_annotations: true }
+
+    assets:
+        packages:
+            theme-default:
+                base_path: '/theme-default'
