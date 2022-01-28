@@ -1,10 +1,11 @@
 {% extends "default/front/layout.html.twig" %}
 
 {% block body %}
-    <h1>Musicgame</h1>
+    
 	{% if musicgames|length > 0 %}
 		
 		<div class="col-lg-12">
+			<h1>Games</h1>
 			{% for game in musicgames %}
 				<div class="col-11 mb-3">
 					<div class="card mb-3" style="max-width: 540px;">
@@ -26,14 +27,15 @@
 			{% endfor %}
 		</div>
 		<div class="col-lg-12">
+			<h1>Playlist</h1>
 			{% for game in musicgames %}
 				{% for playlist in game.playlists %}
 					<div class="col-11 mb-3">
 						<div class="card mb-3" style="max-width: 540px;">
 							<div class="row g-0">
-								<div class="col-md-4">
+								{# <div class="col-md-4">
 									<img src="/images/musicgame-default.png" class="img-fluid rounded-start" alt="musicgame">
-								</div>
+								</div> #}
 								<div class="col-md-8">
 									<div class="card-body">
 										<h5 class="card-title">

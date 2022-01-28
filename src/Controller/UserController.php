@@ -3,6 +3,7 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Form\UserType;
+use App\Util\Paginator;
 use App\Form\ProfileType;
 use App\Form\ChangePasswordType;
 use App\Repository\UserRepository;
@@ -26,12 +27,18 @@ class UserController extends AdminController
     /**
      * @Route("/admin/users", name="admin_user_list", methods={"GET"})
      */
-    public function list()
+    public function list(Request $request)
     {
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
-        $users = $this->userRepository->findAll();
-        return $this->returnView('user-list.html.twig', [
-            'users' => $users
+        $currentPage = $request->get('page') ?? null;
+        $nItems = $this->userRepository->count([]);
+        $perPage = 25;
+        $paginator = new Paginator($nItems, $currentPage, $perPage);
+        $users = $this->userRepository->findBy([], null, $perPage, $paginator->getFirstitem());
+        // $users = $this->userRepository->findAll();
+        return $this->returnView('test-list.html.twig', [ // user-list.html.twig
+            'users' => $users,
+            'paginator' => $paginator
         ]);
     }
 
