@@ -1,0 +1,65 @@
+{% extends "default/admin/layout.html.twig" %}
+{% block body %}
+	<h1>Liste des utilisateurs</h1>
+	{% if users %}
+		<div class="col-10 mb-3">
+			<table class="table" id="users_table">
+				<thead>
+					<tr>
+						<th></th>
+						<th>Username</th>
+						<th>Role</th>
+						<th>Email</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for user in users %}
+						{% if user.username != app.user.username %}
+							<tr>
+								<td>{{ user.id }}</td>
+								<td>{{ user.username }}</td>
+								<td>
+									{% if user.roles[0] == "ROLE_ADMIN" %}
+										Administrateur
+									{% elseif user.roles[0] == "ROLE_MODO" %}
+										Modérateur
+									{% elseif user.roles[0] == "ROLE_USER" %}
+										Utilisateur
+									{% else %}
+										Utilisateur
+									{% endif %}
+								</td>
+								<td>{{ user.email }}</td>
+							</tr>
+						{% endif %}
+					{% endfor %}
+				</tbody>
+			</table>
+		</div>
+		<div class="col-10 mb-3">
+			<nav>
+				<ul class="pagination m-0">
+					<li class="page-item {% if paginator.currentPage == 1 %} disabled {% endif %}">
+                        {% set previousPage = paginator.currentPage - 1 %}
+						<a class="page-link"  href="{{ path ('admin_user_list', { page:previousPage }) }}">Previous</a>
+					</li>
+                    {% for i in 1..paginator.nPages %}
+                        <li class="page-item">
+                            <a class="page-link {% if paginator.currentPage == i %} active {% endif %}" href="{{ path ('admin_user_list', { page:i }) }}">{{ i }}</a>
+                        </li>
+                    {% endfor %}
+					<li class="page-item {% if paginator.currentPage == paginator.nPages %} disabled {% endif %}">
+                        {% set nextPage = paginator.currentPage + 1 %}
+						<a class="page-link" href="{{ path ('admin_user_list', { page:nextPage }) }}">Next</a>
+					</li>
+				</ul>
+			</nav>
+		</div>
+	{% endif %}
+	<div class="col-10 mb-3">
+		<a href="{{ path ('admin_user_create') }}" class="btn btn-secondary">Ajouter un utilisateur</a>
+	</div>
+{% endblock %}
+{% block javascripts %}
+	<script></script>
+{% endblock %}
