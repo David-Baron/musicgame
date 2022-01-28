@@ -54,7 +54,8 @@ class FrontController extends AbstractController
         $data['domain'] = $this->settingRepository->findOneBy(['name' => 'website_domain'])->getValue();
         $data['sitename'] = $this->settingRepository->findOneBy(['name' => 'website_name'])->getValue();
         $data['icon'] = $this->settingRepository->findOneBy(['name' => 'website_icon'])->getValue();
+        $data['theme'] = $this->settingRepository->findOneBy(['name' => 'website_theme'])->getValue() ?? 'default';
         
-        return $this->render($this->settingRepository->findOneBy(['name' => 'website_templates'])->getValue() . '/front/' . $template, $data);
+        return $this->render($data['theme'] . '/front/' . $template, $data);
     }
 }
