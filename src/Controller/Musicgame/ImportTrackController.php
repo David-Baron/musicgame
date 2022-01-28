@@ -9,6 +9,7 @@ use App\Form\Custom\FileImporterCsvType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 class ImportTrackController extends AdminController
 {
@@ -28,9 +29,16 @@ class ImportTrackController extends AdminController
     {
         $musicgame = $this->musicgameRepository->findOneBy(['slug' => $request->get('slug')]);
         $importForm = $this->createForm(FileImporterCsvType::class);
+        $importForm->add('tracksOnline', ChoiceType::class, [
+            'choices' => [
+                'Yes' => 1,
+                'No' => 0,
+            ]
+        ]);
         $importForm->handleRequest($request);
         if ($importForm->isSubmitted() && $importForm->isValid()) {
             $csvFile = $importForm->get('file')->getData();
+            $online = $importForm->get('tracksOnline')->getData();
             if ($csvFile) {
                 $filename = $csvFileUploader->upload($csvFile);
                 $csvFiles = [];
@@ -41,7 +49,7 @@ class ImportTrackController extends AdminController
                     $csvFiles[] = $filename; 
                 }
                 foreach ($csvFiles as $filename) {
-                    $this->insertDataFromCsvFile($musicgame, $filename);
+                    $this->insertDataFromCsvFile($musicgame, $filename, $online);
                 }
                 $this->addFlash('success', 'Tracks are registered in database!');
                 return $this->redirectToRoute('admin_musicgame_game_track_list', ['slug' => $musicgame->getSlug()]);
@@ -54,7 +62,7 @@ class ImportTrackController extends AdminController
         ]);
     }
 
-    public function insertDataFromCsvFile($musicgame, string $filename)
+    public function insertDataFromCsvFile($musicgame, string $filename, bool $online)
     {
         $this->em->getConnection()->getConfiguration()->setSQLLogger(null);
         $csv = fopen($this->getParameter('upload_directory').$filename, 'r');
@@ -69,7 +77,7 @@ class ImportTrackController extends AdminController
                 $track = new MusicgameTrack();
                 $track->setArtist($row[0]);
                 $track->setTitle($row[1]);
-                $track->setIsOnline(0);
+                $track->setIsOnline($online);
                 $track->setFullname($track->getArtist().' - '.$track->getTitle());
                 //$track->setMusicgame($musicgame);
                 $musicgame->addTrack($track);
