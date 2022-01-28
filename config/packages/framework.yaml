@@ -20,5 +20,5 @@ framework:
 
     assets:
         packages:
-            theme-default:
-                base_path: '/theme-default'
+            default:
+                base_path: '/default'
