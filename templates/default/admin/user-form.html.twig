@@ -12,7 +12,7 @@
         </p> 
     </div>
     {% form_theme form 'bootstrap_5_layout.html.twig' %}
-    {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
+    {{ form_start(form) }}
         <div class="mb-3">
             <label for="user_username" class="form-label">Nom d'utilisateur</label>
             {{ form_widget(form.username, {'attr': {'class': 'form-control'}}) }}
