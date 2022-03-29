@@ -5,7 +5,7 @@ class Paginator
 {
     protected $perPage;
     protected $nPages = 1;
-    protected $firstItem = 1;
+    protected $firstItem = 0;
     protected $currentPage = 1;
 
     public function __construct(int $nItems, ?int $currentPage = 1, ?int $perPage = 25 )
