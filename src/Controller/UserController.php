@@ -53,10 +53,7 @@ class UserController extends AdminController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $user = $form->getData();
-            $user->setPassword($passwordEncoder->hashPassword(
-                $user,
-                'RockAndRoll'
-            ));
+            $user->setPassword('$2y$13$ybdsRvuJ6QAF.d4LbImeRuxbVbEJpz2av9j4gBh39vIxiHUYXUGJq');
             $this->em->persist($user);
             $this->em->flush();
 
